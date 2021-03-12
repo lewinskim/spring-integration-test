@@ -1,5 +1,6 @@
 package home.demo.springtestsdemov1;
 
+import org.assertj.core.api.Assertions;
 import org.assertj.core.api.BDDAssertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,17 @@ public class StudentServiceTest {
         //then
         BDDAssertions.then(fetchedStudent.getName()).isEqualTo("Student1");
         BDDAssertions.then(fetchedStudent.getId()).isNotNull();
+    }
+
+    @Test
+    void shouldThrowUserNotFoundException() {
+        //given
+        Long id = 666L;
+
+        //when
+        Throwable throwable = Assertions.catchThrowable(() -> studentService.getStudentById(id));
+
+        //then
+        BDDAssertions.then(throwable).isInstanceOf(StudentNotFoundException.class);
     }
 }
