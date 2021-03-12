@@ -1,6 +1,7 @@
 package home.demo.springtestsdemov1;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +13,18 @@ import javax.persistence.Id;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Student {
 
     @Id
     @GeneratedValue
     private Long id;
     private String name;
+    private boolean active;
+    private int grade;
+
+    public Student(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
