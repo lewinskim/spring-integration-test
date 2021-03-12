@@ -18,7 +18,7 @@ public class StudentRepositoryTest {
     private TestEntityManager testEntityManager;
 
     @Test
-    void shouldReturnStudentDetails(){
+    void shouldReturnStudentDetails() {
         //given
         Student marek = new Student(null, "Marek");
         Student savedStudent = testEntityManager.persistFlushFind(marek);
@@ -31,12 +31,12 @@ public class StudentRepositoryTest {
     }
 
     @Test
-    void shouldReturnAvgGradeForActiveStudents(){
+    void shouldReturnAvgGradeForActiveStudents() {
         //given
         Student student1 = Student.builder().name("Student1").active(true).grade(100).build();
         Student student2 = Student.builder().name("Student2").active(true).grade(50).build();
         Student student3 = Student.builder().name("Student3").active(false).grade(100).build();
-        List.of(student1,student2,student3).forEach(testEntityManager::persistFlushFind);
+        List.of(student1, student2, student3).forEach(testEntityManager::persistFlushFind);
 
         //when
         Double avgGrade = repository.getActiveStudentAvgGrade();

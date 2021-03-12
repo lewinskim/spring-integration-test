@@ -12,7 +12,13 @@ public class StudentController {
     private final StudentService service;
 
     @GetMapping("students/{id}")
-    public Student getStudentById(@PathVariable Long id){
+    public Student getStudentById(@PathVariable Long id) {
         return service.getStudentById(id);
     }
+
+/*    @ExceptionHandler
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    void studentNotFoundException(StudentNotFoundException e){
+
+    }*/
 }

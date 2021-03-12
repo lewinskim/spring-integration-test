@@ -29,14 +29,23 @@ public class StudentControllerTest {
                         .grade(100)
                         .build()
         );
-        //when
-
-        //then
+        //when//then
         mockMvc.perform(MockMvcRequestBuilders.get("/students/1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.jsonPath("id").value(1L))
                 .andExpect(MockMvcResultMatchers.jsonPath("name").value("Student1"))
                 .andExpect(MockMvcResultMatchers.jsonPath("grade").value(100));
+    }
+
+    @Test
+    void shouldThrowStudentNotFoundException() throws Exception {
+        //given
+        BDDMockito.given(service.getStudentById(ArgumentMatchers.anyLong()))
+                .willThrow(StudentNotFoundException.class);
+
+        //when//then
+        mockMvc.perform(MockMvcRequestBuilders.get("/students/1"))
+                .andExpect(MockMvcResultMatchers.status().isNotFound());
     }
 
 }
