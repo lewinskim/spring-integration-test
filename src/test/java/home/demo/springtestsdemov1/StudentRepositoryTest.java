@@ -7,12 +7,17 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @DataJpaTest
 public class StudentRepositoryTest {
 
     @Autowired
     private StudentRepository repository;
+
+    @Autowired
+    private ClassroomRepository classroomRepository;
 
     @Autowired
     private TestEntityManager testEntityManager;
@@ -43,5 +48,20 @@ public class StudentRepositoryTest {
 
         //then
         BDDAssertions.then(avgGrade).isEqualTo(75);
+    }
+
+    @Test
+    void nPlusOneTest() {
+        Student student1 = Student.builder().name("Student1").active(true).grade(100).build();
+        Student student2 = Student.builder().name("Student2").active(true).grade(50).build();
+        Student student3 = Student.builder().name("Student3").active(false).grade(100).build();
+        ClassRoom classA = new ClassRoom(null, "ClassA", null);
+        List<Student> students = List.of(student1, student2, student3);
+        students.forEach(student -> student.setClassRoom(classA));
+        classA.setStudents(students);
+        ClassRoom classRoom = testEntityManager.persist(classA);
+        Optional<ClassRoom> optionalClassRoom = classroomRepository.findById(classRoom.getId());
+        ClassRoom classRoom1 = optionalClassRoom.get();
+        System.out.println(classRoom1.toString());
     }
 }

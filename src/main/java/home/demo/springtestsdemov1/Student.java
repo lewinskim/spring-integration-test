@@ -1,13 +1,8 @@
 package home.demo.springtestsdemov1;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -22,6 +17,11 @@ class Student {
     private String name;
     private boolean active;
     private int grade;
+
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "classroom_id")
+    @ToString.Exclude
+    private ClassRoom classRoom;
 
     public Student(Long id, String name) {
         this.id = id;
